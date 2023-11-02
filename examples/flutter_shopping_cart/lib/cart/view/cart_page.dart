@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_shopping_cart/cart/cart.dart';
+import 'package:flutter_shopping_cart/cart/cubit/cart_cubit.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -56,6 +57,7 @@ class CartList extends StatelessWidget {
                   title: Text(item.name, style: itemNameStyle),
                   onLongPress: () {
                     context.read<CartBloc>().add(CartItemRemoved(item));
+                    context.read<CartCubit>().decrement();
                   },
                 ),
               );

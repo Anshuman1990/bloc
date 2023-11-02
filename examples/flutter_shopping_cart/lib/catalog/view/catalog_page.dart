@@ -1,6 +1,8 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_shopping_cart/cart/cart.dart';
+import 'package:flutter_shopping_cart/cart/cubit/cart_cubit.dart';
 import 'package:flutter_shopping_cart/catalog/catalog.dart';
 
 class CatalogPage extends StatelessWidget {
@@ -62,7 +64,10 @@ class AddButton extends StatelessWidget {
             ),
             onPressed: isInCart
                 ? null
-                : () => context.read<CartBloc>().add(CartItemAdded(item)),
+                : () => {
+                      context.read<CartBloc>().add(CartItemAdded(item)),
+                      context.read<CartCubit>().increment()
+                    },
             child: isInCart
                 ? const Icon(Icons.check, semanticLabel: 'ADDED')
                 : const Text('ADD'),
@@ -82,11 +87,20 @@ class CatalogAppBar extends StatelessWidget {
     return SliverAppBar(
       title: const Text('Catalog'),
       floating: true,
+      centerTitle: false,
       actions: [
-        IconButton(
-          icon: const Icon(Icons.shopping_cart),
-          onPressed: () => Navigator.of(context).pushNamed('/cart'),
+        Badge(
+          badgeContent: BlocBuilder<CartCubit, int>(
+            builder: (context, state) {
+              return Text('$state');
+            },
+          ),
+          child: IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: () => Navigator.of(context).pushNamed('/cart'),
+          ),
         ),
+        const Padding(padding: EdgeInsets.only(right: 25)),
       ],
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_shopping_cart/cart/cart.dart';
+import 'package:flutter_shopping_cart/cart/cubit/cart_cubit.dart';
 import 'package:flutter_shopping_cart/catalog/catalog.dart';
 import 'package:flutter_shopping_cart/shopping_repository.dart';
 
@@ -22,10 +23,12 @@ class App extends StatelessWidget {
           create: (_) => CartBloc(
             shoppingRepository: shoppingRepository,
           )..add(CartStarted()),
-        )
+        ),
+        BlocProvider(create: (_) => CartCubit())
       ],
       child: MaterialApp(
         title: 'Flutter Bloc Shopping Cart',
+        debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
           '/': (_) => const CatalogPage(),
